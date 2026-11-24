@@ -1,3 +1,9 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 2 optimizations:
+# - [HIGH] Add cargo dependency cache to "test" job
+# - [MEDIUM] Add concurrency group to "ci.yaml"
+# Estimated savings: ~10 min/run
+#
 name: CI
 on:
   workflow_dispatch:
@@ -15,6 +21,10 @@ on:
       - '**/Cargo.toml'
       - '**/Cargo.lock'
       - '.github/workflows/ci.yaml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   test:
     name: Build and Test
